@@ -28,8 +28,7 @@ Pour utiliser ce lanceur, suivez ces étapes :
 
 ## Auteur
 
-- Développé par Muyga
-- Images par Muyga
+Muyga
 
 ## Contribuer
 
