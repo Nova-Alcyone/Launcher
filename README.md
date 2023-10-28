@@ -34,10 +34,4 @@ Muyga
 
 Ce projet est actuellement géré par Muyga. Si vous souhaitez contribuer ou signaler des problèmes, veuillez contacter l'auteur.
 
-## Licence
-
-© Tous droits réservés.
-
-Permission vous est accordée de télécharger et d'utiliser ce logiciel uniquement à des fins personnelles, non commerciales. Vous n'êtes pas autorisé à copier, modifier, distribuer, ou créer des œuvres dérivées basées sur ce logiciel. Toute utilisation en violation de ces termes constitue une infraction aux droits d'auteur.
-
-Pour toute demande de licence ou d'autorisation spécifique, veuillez contacter [support@novaalcyone.com].
+## [Licence](https://github.com/Muyga/NovaRepo/blob/main/LICENSE.md)
