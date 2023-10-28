@@ -26,7 +26,12 @@ def launch_nova_client(root, nova_directory):
         os.mkdir(nova_directory)
 
         json_url = 'https://raw.githubusercontent.com/Muyga/NovaRepo/main/Launcher/data/novaclient-version-info.json'
-        download_file(json_url, os.path.join(nova_directory, 'novaclient-version-info.json'))
+        local_json_path = os.path.join(nova_directory, 'novaclient-version-info.json')
+
+        download_file(json_url, local_json_path)  # Download the JSON file
+
+        with open(local_json_path, 'r') as f:
+            local_json = json.load(f)
 
         # Get the latest release from the GitHub repository
         release_url = 'https://api.github.com/repos/Muyga/NovaClient/releases/latest'
@@ -39,6 +44,12 @@ def launch_nova_client(root, nova_directory):
                     exe_url = asset['browser_download_url']
                     download_file(exe_url, os.path.join(nova_directory, 'NovaClient.exe'))
                     break
+
+        local_json['latest_version'] = release_info['tag_name']
+
+        # Update the "latest_version" field in the local JSON file
+        with open(local_json_path, 'w') as f:
+            json.dump(local_json, f)
 
     else:
         local_json_path = os.path.join(nova_directory, 'novaclient-version-info.json')
@@ -63,6 +74,12 @@ def launch_nova_client(root, nova_directory):
                         exe_url = asset['browser_download_url']
                         download_file(exe_url, os.path.join(nova_directory, 'NovaClient.exe'))
                         break
+
+            local_json['latest_version'] = release_info['tag_name']
+
+            # Update the "latest_version" field in the local JSON file
+            with open(local_json_path, 'w') as f:
+                json.dump(local_json, f)
 
     subprocess.run([os.path.join(nova_directory, 'NovaClient.exe')])
 
