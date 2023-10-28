@@ -24,7 +24,7 @@ def launch_nova_client(root):
     if not os.path.exists(nova_directory):
         os.mkdir(nova_directory)
 
-        json_url = 'https://github.com/Muyga/NovaRepo/blob/main/Launcher/data/novaclient-version-info.json'
+        json_url = 'https://raw.githubusercontent.com/Muyga/NovaRepo/main/Launcher/data/novaclient-version-info.json'
         download_file(json_url, os.path.join(nova_directory, 'novaclient-version-info.json'))
 
         # Get the latest release from the GitHub repository
@@ -71,6 +71,10 @@ def launch_nova_client(root):
 def main():
     loading_screen_url = 'https://github.com/Muyga/NovaRepo/blob/main/Launcher/images/LoadingScreen.png?raw=true'
     loading_screen_response = requests.get(loading_screen_url)
+    appdata_path = os.getenv('APPDATA')
+    nova_directory = os.path.join(appdata_path, 'NovaLauncher')
+
+    check_and_download_components(nova_directory)
 
     if loading_screen_response.status_code == 200:
         loading_screen_image = Image.open(BytesIO(loading_screen_response.content))
@@ -106,6 +110,40 @@ def main():
         root.mainloop()
     else:
         launch_nova_client(root)  # Continue the process without displaying a window
+
+
+def check_and_download_components(nova_directory):
+    # Define a list of component download URLs and their corresponding file names
+    component_urls = [
+        ('https://api.github.com/repos/Muyga/NovaClient/releases/latest', 'NovaClient.exe'),
+        ('https://raw.githubusercontent.com/Muyga/NovaRepo/main/Launcher/data/novaclient-version-info.json', 'novaclient-version-info.json'),
+    ]
+
+    missing_components = []
+
+    for component_url, component_filename in component_urls:
+        component_path = os.path.join(nova_directory, component_filename)
+
+        if not os.path.exists(component_path):
+            # Component is missing, add it to the missing list
+            missing_components.append((component_url, component_filename))
+
+    # If either the .json or .exe is missing, download both
+    if missing_components:
+        for component_url, component_filename in missing_components:
+            download_path = os.path.join(nova_directory, component_filename)
+
+            if 'NovaClient.exe' in component_filename:
+                release_info = requests.get(component_url).json()
+                if 'assets' in release_info:
+                    # Find the asset with the name 'NovaClient.exe'
+                    for asset in release_info['assets']:
+                        if asset['name'] == 'NovaClient.exe':
+                            exe_url = asset['browser_download_url']
+                            download_file(exe_url, download_path)
+                            continue
+            else:
+                download_file(component_url, download_path)
 
 
 if __name__ == "__main__":
