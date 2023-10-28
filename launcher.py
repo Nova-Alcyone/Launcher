@@ -24,29 +24,44 @@ def launch_nova_client(root):
     if not os.path.exists(nova_directory):
         os.mkdir(nova_directory)
 
-        json_url = 'https://novaalcyone.com/storage/lanceur/novaclient/novaclient-version-info.json'
+        json_url = 'https://github.com/Muyga/NovaRepo/blob/main/Launcher/data/novaclient-version-info.json'
         download_file(json_url, os.path.join(nova_directory, 'novaclient-version-info.json'))
 
-        exe_url = 'https://novaalcyone.com/storage/lanceur/novaclient/NovaClient.exe'
-        download_file(exe_url, os.path.join(nova_directory, 'NovaClient.exe'))
+        # Get the latest release from the GitHub repository
+        release_url = 'https://api.github.com/repos/Muyga/NovaClient/releases/latest'
+        release_info = requests.get(release_url).json()
+
+        if 'assets' in release_info:
+            # Find the asset with the name 'NovaClient.exe'
+            for asset in release_info['assets']:
+                if asset['name'] == 'NovaClient.exe':
+                    exe_url = asset['browser_download_url']
+                    download_file(exe_url, os.path.join(nova_directory, 'NovaClient.exe'))
+                    break
 
     else:
         local_json_path = os.path.join(nova_directory, 'novaclient-version-info.json')
-        remote_json_url = 'https://novaalcyone.com/storage/lanceur/novaclient/novaclient-version-info.json'
 
         with open(local_json_path, 'r') as f:
             local_json = json.load(f)
 
-        remote_json = requests.get(remote_json_url).json()
+        remote_json = requests.get('https://raw.githubusercontent.com/Muyga/NovaRepo/main/Launcher/data/novaclient-version-info.json').json()
+        print(remote_json)
 
         local_version = local_json['latest_version']
         remote_version = remote_json['latest_version']
 
         if remote_version > local_version:
-            exe_url = 'https://novaalcyone.com/storage/lanceur/novaclient/NovaClient.exe'
-            download_file(exe_url, os.path.join(nova_directory, 'NovaClient.exe'))
+            release_url = 'https://api.github.com/repos/Muyga/NovaClient/releases/latest'
+            release_info = requests.get(release_url).json()
 
-            download_file(remote_json_url, local_json_path)
+            if 'assets' in release_info:
+                # Find the asset with the name 'NovaClient.exe'
+                for asset in release_info['assets']:
+                    if asset['name'] == 'NovaClient.exe':
+                        exe_url = asset['browser_download_url']
+                        download_file(exe_url, os.path.join(nova_directory, 'NovaClient.exe'))
+                        break
 
     subprocess.run([os.path.join(nova_directory, 'NovaClient.exe')])
 
@@ -54,7 +69,7 @@ def launch_nova_client(root):
 
 
 def main():
-    loading_screen_url = 'https://github.com/Muyga/NovaImages/blob/main/LoadingScreen.png?raw=true'
+    loading_screen_url = 'https://github.com/Muyga/NovaRepo/blob/main/Launcher/images/LoadingScreen.png?raw=true'
     loading_screen_response = requests.get(loading_screen_url)
 
     if loading_screen_response.status_code == 200:
