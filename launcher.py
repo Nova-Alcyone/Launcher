@@ -17,9 +17,10 @@ def download_file(url, dest_path):
         return  # Exit the function if the image is not found
 
 
-def launch_nova_client(root):
+def launch_nova_client(root, nova_directory):
     appdata_path = os.getenv('APPDATA')
     nova_directory = os.path.join(appdata_path, 'NovaLauncher')
+    exe_path = os.path.join(nova_directory, 'NovaClient.exe')
 
     if not os.path.exists(nova_directory):
         os.mkdir(nova_directory)
@@ -69,12 +70,14 @@ def launch_nova_client(root):
 
 
 def main():
-    loading_screen_url = 'https://github.com/Muyga/NovaRepo/blob/main/Launcher/images/LoadingScreen.png?raw=true'
-    loading_screen_response = requests.get(loading_screen_url)
     appdata_path = os.getenv('APPDATA')
     nova_directory = os.path.join(appdata_path, 'NovaLauncher')
 
-    check_and_download_components(nova_directory)
+    if not os.path.exists(nova_directory):
+        os.mkdir(nova_directory)
+
+    loading_screen_url = 'https://github.com/Muyga/NovaRepo/blob/main/Launcher/images/LoadingScreen.png?raw=true'
+    loading_screen_response = requests.get(loading_screen_url)
 
     if loading_screen_response.status_code == 200:
         loading_screen_image = Image.open(BytesIO(loading_screen_response.content))
@@ -105,11 +108,16 @@ def main():
         loading_label = tk.Label(root, image=loading_screen_tk)  # Set the background to transparent
         loading_label.pack()
 
-        root.after(500, lambda: launch_nova_client(root))  # Launch Nova Client after 500 milliseconds
+        # Check for 'NovaLauncher.exe' and components after creating the directory
+        check_and_download_components(nova_directory)
+
+        root.after(500, lambda: launch_nova_client(root, nova_directory))  # Launch Nova Client after 500 milliseconds
 
         root.mainloop()
     else:
-        launch_nova_client(root)  # Continue the process without displaying a window
+        # Check for 'NovaLauncher.exe' and components without displaying a window
+        check_and_download_components(nova_directory)
+        launch_nova_client(root, nova_directory)  # Continue the process without displaying a window
 
 
 def check_and_download_components(nova_directory):
@@ -123,9 +131,8 @@ def check_and_download_components(nova_directory):
 
     for component_url, component_filename in component_urls:
         component_path = os.path.join(nova_directory, component_filename)
-
         if not os.path.exists(component_path):
-            # Component is missing, add it to the missing list
+            # Component is missing, add it to the missing_components list
             missing_components.append((component_url, component_filename))
 
     # If either the .json or .exe is missing, download both
@@ -142,6 +149,7 @@ def check_and_download_components(nova_directory):
                             exe_url = asset['browser_download_url']
                             download_file(exe_url, download_path)
                             continue
+
             else:
                 download_file(component_url, download_path)
 
