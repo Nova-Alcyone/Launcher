@@ -35,3 +35,5 @@ Muyga
 Ce projet est actuellement géré par Muyga. Si vous souhaitez contribuer ou signaler des problèmes, veuillez contacter l'auteur.
 
 ## [Licence](https://github.com/Muyga/NovaRepo/blob/main/LICENSE.md)
+
+## [VirusTotal](https://www.virustotal.com/gui/file/ae4580b1616600fb6e7f1751b8f9ccf3f0d984640624a96064da952018ada77d)
