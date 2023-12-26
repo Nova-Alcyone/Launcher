@@ -64,7 +64,7 @@ def launch_nova_client(root, nova_directory):
         remote_version = remote_json['latest_version']
 
         if remote_version > local_version:
-            release_url = 'https://api.github.com/repos/Nova-Alcyone/Client/releases/latest'
+            release_url = 'https://github.com/Nova-Alcyone/Client/releases/latest/download/NovaClient.exe'
             release_info = requests.get(release_url).json()
 
             if 'assets' in release_info:
@@ -138,7 +138,7 @@ def main():
 def check_and_download_components(nova_directory):
     # Define a list of component download URLs and their corresponding file names
     component_urls = [
-        ('https://api.github.com/repos/Nova-Alcyone/Client/releases/latest', 'NovaClient.exe'),
+        ('https://github.com/Nova-Alcyone/Client/releases/latest/download/NovaClient.exe', 'NovaClient.exe'),
         ('https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/data.json', 'data.json'),
     ]
 
