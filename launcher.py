@@ -25,8 +25,8 @@ def launch_nova_client(root, nova_directory):
     if not os.path.exists(nova_directory):
         os.mkdir(nova_directory)
 
-        json_url = 'https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/novaclient-version-info.json'
-        local_json_path = os.path.join(nova_directory, 'novaclient-version-info.json')
+        json_url = 'https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/data.json'
+        local_json_path = os.path.join(nova_directory, 'data.json')
 
         download_file(json_url, local_json_path)  # Download the JSON file
 
@@ -34,7 +34,7 @@ def launch_nova_client(root, nova_directory):
             local_json = json.load(f)
 
         # Get the latest release from the GitHub repository
-        release_url = 'https://api.github.com/repos/Nova-Alcyone/Client/releases/latest'
+        release_url = 'https://github.com/Nova-Alcyone/Client/releases/latest/download/NovaClient.exe'
         release_info = requests.get(release_url).json()
 
         if 'assets' in release_info:
@@ -52,19 +52,19 @@ def launch_nova_client(root, nova_directory):
             json.dump(local_json, f)
 
     else:
-        local_json_path = os.path.join(nova_directory, 'novaclient-version-info.json')
+        local_json_path = os.path.join(nova_directory, 'data.json')
 
         with open(local_json_path, 'r') as f:
             local_json = json.load(f)
 
-        remote_json = requests.get('https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/novaclient-version-info.json').json()
+        remote_json = requests.get('https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/data.json').json()
         print(remote_json)
 
         local_version = local_json['latest_version']
         remote_version = remote_json['latest_version']
 
         if remote_version > local_version:
-            release_url = 'https://api.github.com/repos/Nova-Alcyone/Client/releases/latest'
+            release_url = 'https://github.com/Nova-Alcyone/Client/releases/latest/download/NovaClient.exe'
             release_info = requests.get(release_url).json()
 
             if 'assets' in release_info:
@@ -117,8 +117,6 @@ def main():
         y_position = (screen_height - image_height) // 2
         root.geometry(f"{image_width}x{image_height}+{x_position}+{y_position}")
 
-        root.attributes("-topmost", True)  # Keep the window on top
-
         # Create the ImageTk PhotoImage object after the root window is created
         loading_screen_tk = ImageTk.PhotoImage(loading_screen_image)
 
@@ -140,8 +138,8 @@ def main():
 def check_and_download_components(nova_directory):
     # Define a list of component download URLs and their corresponding file names
     component_urls = [
-        ('https://api.github.com/repos/Nova-Alcyone/Client/releases/latest', 'NovaClient.exe'),
-        ('https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/novaclient-version-info.json', 'novaclient-version-info.json'),
+        ('https://github.com/Nova-Alcyone/Client/releases/latest/download/NovaClient.exe', 'NovaClient.exe'),
+        ('https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/data.json', 'data.json'),
     ]
 
     missing_components = []
