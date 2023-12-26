@@ -25,7 +25,7 @@ def launch_nova_client(root, nova_directory):
     if not os.path.exists(nova_directory):
         os.mkdir(nova_directory)
 
-        json_url = 'https://raw.githubusercontent.com/Muyga/NovaRepo/main/Launcher/data/novaclient-version-info.json'
+        json_url = 'https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/novaclient-version-info.json'
         local_json_path = os.path.join(nova_directory, 'novaclient-version-info.json')
 
         download_file(json_url, local_json_path)  # Download the JSON file
@@ -34,7 +34,7 @@ def launch_nova_client(root, nova_directory):
             local_json = json.load(f)
 
         # Get the latest release from the GitHub repository
-        release_url = 'https://api.github.com/repos/Muyga/NovaClient/releases/latest'
+        release_url = 'https://api.github.com/repos/Nova-Alcyone/Client/releases/latest'
         release_info = requests.get(release_url).json()
 
         if 'assets' in release_info:
@@ -57,14 +57,14 @@ def launch_nova_client(root, nova_directory):
         with open(local_json_path, 'r') as f:
             local_json = json.load(f)
 
-        remote_json = requests.get('https://raw.githubusercontent.com/Muyga/NovaRepo/main/Launcher/data/novaclient-version-info.json').json()
+        remote_json = requests.get('https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/novaclient-version-info.json').json()
         print(remote_json)
 
         local_version = local_json['latest_version']
         remote_version = remote_json['latest_version']
 
         if remote_version > local_version:
-            release_url = 'https://api.github.com/repos/Muyga/NovaClient/releases/latest'
+            release_url = 'https://api.github.com/repos/Nova-Alcyone/Client/releases/latest'
             release_info = requests.get(release_url).json()
 
             if 'assets' in release_info:
@@ -93,7 +93,7 @@ def main():
     if not os.path.exists(nova_directory):
         os.mkdir(nova_directory)
 
-    loading_screen_url = 'https://github.com/Muyga/NovaRepo/blob/main/Launcher/images/LoadingScreen.png?raw=true'
+    loading_screen_url = 'https://github.com/Nova-Alcyone/Repo/blob/main/Launcher/images/LoadingScreen.png?raw=true'
     loading_screen_response = requests.get(loading_screen_url)
 
     if loading_screen_response.status_code == 200:
@@ -140,8 +140,8 @@ def main():
 def check_and_download_components(nova_directory):
     # Define a list of component download URLs and their corresponding file names
     component_urls = [
-        ('https://api.github.com/repos/Muyga/NovaClient/releases/latest', 'NovaClient.exe'),
-        ('https://raw.githubusercontent.com/Muyga/NovaRepo/main/Launcher/data/novaclient-version-info.json', 'novaclient-version-info.json'),
+        ('https://api.github.com/repos/Nova-Alcyone/Client/releases/latest', 'NovaClient.exe'),
+        ('https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/data/novaclient-version-info.json', 'novaclient-version-info.json'),
     ]
 
     missing_components = []
