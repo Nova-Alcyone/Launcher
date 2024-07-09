@@ -7,6 +7,7 @@ import tkinter as tk
 from io import BytesIO
 from PIL import Image, ImageTk
 from datetime import datetime
+import sys
 
 
 def download_file(url, dest_path):
@@ -128,12 +129,8 @@ def launch_nova_client(root, nova_directory):
     with open(log_file_path, 'a') as log_file:
         log_file.write(f"================ Launching NovaClient.exe at {datetime.now()} ================\n")
         process = subprocess.Popen([os.path.join(nova_directory, 'NovaClient.exe')], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        stdout, stderr = process.communicate()
-        log_file.write(stdout.decode('utf-8'))
-        log_file.write(stderr.decode('utf-8'))
-        log_file.write("\n\n")
         print(f"Launched NovaClient.exe at {datetime.now()}")
-        log_action(f"Launched NovaClient.exe at {datetime.now()}")
+        sys.exit()
 
 
 def log_action(message):
@@ -147,7 +144,7 @@ def log_action(message):
 
 def main():
     appdata_path = os.getenv('APPDATA')
-    nova_directory = os.path.join(appdata_path, 'NovaLauncher')
+    nova_directory = os.path.join(appdata_path, '.novaclient')
 
     if not os.path.exists(nova_directory):
         os.makedirs(nova_directory)
