@@ -1,6 +1,6 @@
 # Lanceur Nova Alcyone pour Minecraft
 
-![Logo du Lanceur](https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/images/Nova-Antares.png)
+![Logo du Lanceur](https://raw.githubusercontent.com/Nova-Alcyone/Repo/main/Launcher/images/nova_alcyone.png)
 
 Lanceur Minecraft personnalisé pour l'utilisation exclusive de Nova Alcyone.
 
